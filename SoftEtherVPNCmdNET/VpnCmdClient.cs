@@ -287,6 +287,36 @@ namespace SoftEtherVPNCmdNET
             }
             return null;
         }
+        //------------------------------------------------------------------------------------------------------
+        ///<summary>
+        ///Create New VPN Connection Setting.
+        ///</summary>
+        ///<returns>
+        ///Returns Response object that contains boolean Success and Info string with more details.
+        ///</returns>
+        ///<param name="name">Specify the name of the VPN Connection Setting to create.</param>
+        ///<param name="server">Specify the host name and port number of the destination VPN Server using the format [host name:port number]. You can also specify by IP address.</param>
+        ///<param name="hub">Specify the Virtual Hub on the destination VPN Server.</param>
+        ///<param name="username">Specify the user name to use for user authentication when connecting to the destination VPN Server.</param>
+        ///<param name="nic">Specify the virtual network adapter to use to connect.</param>
+        public Response AccountCreate(string name,string server,string hub,string username, string nic)
+        {
+            return GeneralCommand("AccountCreate", name + " /SERVER:" + server + " /HUB:" + hub + " /USERNAME:" + username + " /NICNAME:" + nic);
+        }
+        //------------------------------------------------------------------------------------------------------
+        ///<summary>
+        ///Set the VPN Connection Setting Connection Destination.
+        ///</summary>
+        ///<returns>
+        ///Returns Response object that contains boolean Success and Info string with more details.
+        ///</returns>
+        ///<param name="name">Specify the name of the VPN Connection Setting to create.</param>
+        ///<param name="server">Specify the host name and port number of the destination VPN Server using the format [host name:port number]. You can also specify by IP address.</param>
+        ///<param name="hub">Specify the Virtual Hub on the destination VPN Server.</param>
+        public Response AccountSet(string name, string server, string hub)
+        {
+            return GeneralCommand("AccountSet", name + " /SERVER:" + server + " /HUB:" + hub);
+        }
         public Response AccountConnect(string name)
         {
             return GeneralCommand("AccountConnect", name);
@@ -299,5 +329,7 @@ namespace SoftEtherVPNCmdNET
         {
             return GeneralCommand("AccountStatusGet", name);
         }
+        //TODO: Fix all Get functions so they return class with key value or dictonary.
+        //TODO: Finish all other functions.
     }
 }
