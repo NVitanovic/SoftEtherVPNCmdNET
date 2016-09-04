@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using CsvHelper;
+using System.IO;
 
 namespace SoftEtherVPNCmdNET
 {
@@ -41,6 +43,8 @@ namespace SoftEtherVPNCmdNET
         ///<returns>
         ///Returns Response object that contains boolean Success and Info string with more details.
         ///</returns>
+        ///<param name="password">Specify the password you wish to set. You can delete the password setting by specifying "none".</param>
+        ///<param name="RemoteOnly">Specify "true" to only require the password to be input when operation is done remotely (from a computer that is not localhost). This stops the password being required when the connection is from localhost. When this parameter is omitted, it will be regarded as "false".</param>
         public Response PasswordSet(string password, bool RemoteOnly = false)
         {
             return GeneralCommand("PasswordSet", password + " /REMOTEONLY:" + (RemoteOnly ? "yes" : "no"));
@@ -74,6 +78,7 @@ namespace SoftEtherVPNCmdNET
         ///<returns>
         ///Returns Response object that contains boolean Success and Info string with more details.
         ///</returns>
+        ///<param name="path">Path to the X.509 file.</param>
         public Response CertAdd(string path)
         {
             return GeneralCommand("CertAdd", path);
@@ -85,6 +90,7 @@ namespace SoftEtherVPNCmdNET
         ///<returns>
         ///Returns Response object that contains boolean Success and Info string with more details.
         ///</returns>
+        ///<param name="id">Specify the ID of the certificate to delete.</param>
         public Response CertDelete(string id)
         {
             return GeneralCommand("CertDelete", id);
@@ -96,6 +102,7 @@ namespace SoftEtherVPNCmdNET
         ///<returns>
         ///Returns Response object that contains boolean Success and Info string with more details.
         ///</returns>
+        ///<param name="id">Specify the ID of the certificate to get.</param>
         public Response CertGet(string id)
         {
             return GeneralCommand("CertDelete", id);
@@ -107,6 +114,8 @@ namespace SoftEtherVPNCmdNET
         ///<returns>
         ///Returns Response object that contains boolean Success and Info string with more details.
         ///</returns>
+        ///<param name="id">Specify the ID of the certificate to get.</param>
+        ///<param name="path">Specify the file name to save the certificate you obtained.</param>
         public Response CertGet(string id,string path)
         {
             return GeneralCommand("CertDelete", id + " /SAVECERT:\"" + path + '\"');
@@ -129,6 +138,7 @@ namespace SoftEtherVPNCmdNET
         ///<returns>
         ///Returns Response object that contains boolean Success and Info string with more details.
         ///</returns>
+        ///<param name="id">Specify the ID of the smart card type.</param>
         public Response SecureSelect(string id)
         {
             return GeneralCommand("SecureSelect", id);
@@ -144,7 +154,139 @@ namespace SoftEtherVPNCmdNET
         {
             return GeneralCommand("SecureGet", "");
         }
+        //------------------------------------------------------------------------------------------------------
+        ///<summary>
+        ///Create New Virtual Network Adapter.
+        ///</summary>
+        ///<returns>
+        ///Returns Response object that contains boolean Success and Info string with more details.
+        ///</returns>
+        ///<param name="name">Specify the name of the virtual network adapter.</param>
+        public Response NicCreate(string name)
+        {
+            //we fix the problem if the process is killed for hanging more than specified timeout
+            timeoutOverride = true;
+            return GeneralCommand("NicCreate", name);
+        }
+        //------------------------------------------------------------------------------------------------------
+        ///<summary>
+        ///Delete Virtual Network Adapter.
+        ///</summary>
+        ///<returns>
+        ///Returns Response object that contains boolean Success and Info string with more details.
+        ///</returns>
+        ///<param name="name">Specify the name of the virtual network adapter.</param>
+        public Response NicDelete(string name)
+        {
+            //we fix the problem if the process is killed for hanging more than specified timeout
+            timeoutOverride = true;
+            return GeneralCommand("NicDelete", name);
+        }
+        //------------------------------------------------------------------------------------------------------
+        ///<summary>
+        ///Upgrade Virtual Network Adapter Device Driver.
+        ///</summary>
+        ///<returns>
+        ///Returns Response object that contains boolean Success and Info string with more details.
+        ///</returns>
+        ///<param name="name">Specify the name of the virtual network adapter.</param>
+        public Response NicUpgrade(string name)
+        {
+            //we fix the problem if the process is killed for hanging more than specified timeout
+            timeoutOverride = true;
+            return GeneralCommand("NicUpgrade", name);
+        }
+        //------------------------------------------------------------------------------------------------------
+        ///<summary>
+        ///Get Virtual Network Adapter Setting.
+        ///</summary>
+        ///<returns>
+        ///Returns Response object that contains boolean Success and Info string with more details.
+        ///</returns>
+        ///<param name="name">Specify the name of the virtual network adapter.</param>
+        public Response NicGetSetting(string name)
+        {
+            return GeneralCommand("NicGetSetting", name);
+        }
+        //------------------------------------------------------------------------------------------------------
+        ///<summary>
+        ///Change Virtual Network Adapter Setting.
+        ///</summary>
+        ///<returns>
+        ///Returns Response object that contains boolean Success and Info string with more details.
+        ///</returns>
+        ///<param name="name">Specify the name of the virtual network adapter.</param>
+        ///<param name="mac">Specify the MAC address you wish to set. Specify a 6-byte hexadecimal string for the MAC address. Example: 00:AC:01:23:45:67 or 00-AC-01-23-45-67</param>
+        public Response NicSetSetting(string name,string mac)
+        {
+            return GeneralCommand("NicSetSetting", name + " /MAC:" + mac);
+        }
+        //------------------------------------------------------------------------------------------------------
+        ///<summary>
+        ///Enable Virtual Network Adapter.
+        ///</summary>
+        ///<returns>
+        ///Returns Response object that contains boolean Success and Info string with more details.
+        ///</returns>
+        ///<param name="name">Specify the name of the virtual network adapter.</param>
+        public Response NicEnable(string name)
+        {
+            return GeneralCommand("NicEnable", name);
+        }
+        //------------------------------------------------------------------------------------------------------
+        ///<summary>
+        ///Disable Virtual Network Adapter.
+        ///</summary>
+        ///<returns>
+        ///Returns Response object that contains boolean Success and Info string with more details.
+        ///</returns>
+        ///<param name="name">Specify the name of the virtual network adapter.</param>
+        public Response NicDisable(string name)
+        {
+            return GeneralCommand("NicDisable", name);
+        }
+        //------------------------------------------------------------------------------------------------------
+        ///<summary>
+        ///Get List of Virtual Network Adapters.
+        ///</summary>
+        ///<returns>
+        ///Returns IEnumerable<Nic> object that contains other objects, it can be converted to the list using .ToList().
+        ///</returns>
+        public IEnumerable<Nic> NicList()
+        {
+            Response r = GeneralCommand("NicList", "");
 
+            if (r.Success)
+            {
+                string text = r.Info.Substring(r.Info.IndexOf("\n\n"));
+                var csv = new CsvReader(new StringReader(text));
+                csv.Configuration.RegisterClassMap<NicClassMap>();
+                var records = csv.GetRecords<Nic>();
+                return records;
+            }
+            return null;
+        }
+        //------------------------------------------------------------------------------------------------------
+        ///<summary>
+        ///Get List of VPN Connection Settings.
+        ///</summary>
+        ///<returns>
+        ///Returns IEnumerable<Account> object that contains other objects, it can be converted to the list using .ToList().
+        ///</returns>
+        public IEnumerable<Account> AccountList()
+        {
+            Response r = GeneralCommand("AccountList", "");
+
+            if (r.Success)
+            {
+                string text = r.Info.Substring(r.Info.IndexOf("\n\n"));
+                var csv = new CsvReader(new StringReader(text));
+                csv.Configuration.RegisterClassMap<AccountClassMap>();
+                var records = csv.GetRecords<Account>();
+                return records;
+            }
+            return null;
+        }
         public Response AccountConnect(string name)
         {
             return GeneralCommand("AccountConnect", name);
