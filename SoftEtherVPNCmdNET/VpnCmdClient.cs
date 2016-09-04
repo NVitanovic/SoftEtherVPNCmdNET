@@ -105,7 +105,7 @@ namespace SoftEtherVPNCmdNET
         ///<param name="id">Specify the ID of the certificate to get.</param>
         public Response CertGet(string id)
         {
-            return GeneralCommand("CertDelete", id);
+            return GeneralCommand("CertGet", id);
         }
         //------------------------------------------------------------------------------------------------------
         ///<summary>
@@ -118,7 +118,7 @@ namespace SoftEtherVPNCmdNET
         ///<param name="path">Specify the file name to save the certificate you obtained.</param>
         public Response CertGet(string id,string path)
         {
-            return GeneralCommand("CertDelete", id + " /SAVECERT:\"" + path + '\"');
+            return GeneralCommand("CertGet", id + " /SAVECERT:\"" + path + '\"');
         }
         //------------------------------------------------------------------------------------------------------
         ///<summary>

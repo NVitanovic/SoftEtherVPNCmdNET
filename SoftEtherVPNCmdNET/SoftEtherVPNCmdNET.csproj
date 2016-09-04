@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="Nic.cs" />
     <Compile Include="VpnCmd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
