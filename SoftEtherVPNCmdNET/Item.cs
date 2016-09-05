@@ -10,7 +10,7 @@ namespace SoftEtherVPNCmdNET
     {
         public ItemClassMap()
         {
-            Map(m => m.Key).Name("Key");
+            Map(m => m.Key).Name("Item");
             Map(m => m.Value).Name("Value");
         }
     }

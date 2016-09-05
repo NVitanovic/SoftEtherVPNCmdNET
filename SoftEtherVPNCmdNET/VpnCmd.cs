@@ -1,6 +1,9 @@
-﻿using System;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -63,5 +66,21 @@ namespace SoftEtherVPNCmdNET
             }
             return new Response(true, output);
         }
+        /*public IEnumerable<T> GetRecordsFromCSV<T>(string data)
+        {
+
+            if(data.IndexOf("\n\n") != -1)
+            {
+                string text = data.Substring(data.IndexOf("\n\n"));
+                var csv = new CsvReader(new StringReader(text));
+                //All Classes that have mappings need to be called ClassNameClassMap. "ClassMap" part is obligatory!!!
+                //TODO: does not return type that is needed only null, idea is to go trough all classes until we find the one with the matching name.
+                Type t = typeof(T).Assembly.GetType(typeof(T).Name + "ClassMap");
+                csv.Configuration.RegisterClassMap(t);
+                var records = csv.GetRecords<T>();
+                return records;
+            }
+            return null;
+        }*/
     }
 }

@@ -54,11 +54,20 @@ namespace SoftEtherVPNCmdNET
         ///Get Password Setting to Connect to VPN Client Service.
         ///</summary>
         ///<returns>
-        ///Returns Response object that contains boolean Success and Info string with more details.
+        ///Returns IEnumerable object that contains list of key value pairs with info about the object.
         ///</returns>
-        public Response PasswordGet()
+        public IEnumerable<Item> PasswordGet()
         {
-            return GeneralCommand("PasswordGet", "");
+            var r = GeneralCommand("PasswordGet", "");
+            if (r.Success)
+            {
+                string text = r.Info.Substring(r.Info.IndexOf("\n\n"));
+                var csv = new CsvReader(new StringReader(text));
+                csv.Configuration.RegisterClassMap<ItemClassMap>();
+                var records = csv.GetRecords<Item>();
+                return records;
+            }
+            return null;
         }
         //------------------------------------------------------------------------------------------------------
         ///<summary>
@@ -100,12 +109,21 @@ namespace SoftEtherVPNCmdNET
         ///Get Trusted CA Certificate.
         ///</summary>
         ///<returns>
-        ///Returns Response object that contains boolean Success and Info string with more details.
+        ///Returns IEnumerable object that contains list of key value pairs with info about the object.
         ///</returns>
         ///<param name="id">Specify the ID of the certificate to get.</param>
-        public Response CertGet(string id)
+        public IEnumerable<Item> CertGet(string id)
         {
-            return GeneralCommand("CertGet", id);
+            var r = GeneralCommand("CertGet", id);
+            if (r.Success)
+            {
+                string text = r.Info.Substring(r.Info.IndexOf("\n\n"));
+                var csv = new CsvReader(new StringReader(text));
+                csv.Configuration.RegisterClassMap<ItemClassMap>();
+                var records = csv.GetRecords<Item>();
+                return records;
+            }
+            return null;
         }
         //------------------------------------------------------------------------------------------------------
         ///<summary>
@@ -148,11 +166,20 @@ namespace SoftEtherVPNCmdNET
         ///Get ID of Smart Card Type to Use.
         ///</summary>
         ///<returns>
-        ///Returns Response object that contains boolean Success and Info string with more details.
+        ///Returns IEnumerable object that contains list of key value pairs with info about the object.
         ///</returns>
-        public Response SecureGet()
+        public IEnumerable<Item> SecureGet()
         {
-            return GeneralCommand("SecureGet", "");
+            var r = GeneralCommand("SecureGet", "");
+            if (r.Success)
+            {
+                string text = r.Info.Substring(r.Info.IndexOf("\n\n"));
+                var csv = new CsvReader(new StringReader(text));
+                csv.Configuration.RegisterClassMap<ItemClassMap>();
+                var records = csv.GetRecords<Item>();
+                return records;
+            }
+            return null;
         }
         //------------------------------------------------------------------------------------------------------
         ///<summary>
@@ -201,12 +228,21 @@ namespace SoftEtherVPNCmdNET
         ///Get Virtual Network Adapter Setting.
         ///</summary>
         ///<returns>
-        ///Returns Response object that contains boolean Success and Info string with more details.
+        ///Returns IEnumerable object that contains list of key value pairs with info about the object.
         ///</returns>
         ///<param name="name">Specify the name of the virtual network adapter.</param>
-        public Response NicGetSetting(string name)
+        public IEnumerable<Item> NicGetSetting(string name)
         {
-            return GeneralCommand("NicGetSetting", name);
+            var r = GeneralCommand("NicGetSetting", name);
+            if (r.Success)
+            {
+                string text = r.Info.Substring(r.Info.IndexOf("\n\n"));
+                var csv = new CsvReader(new StringReader(text));
+                csv.Configuration.RegisterClassMap<ItemClassMap>();
+                var records = csv.GetRecords<Item>();
+                return records;
+            }
+            return null;
         }
         //------------------------------------------------------------------------------------------------------
         ///<summary>
