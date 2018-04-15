@@ -1,6 +1,8 @@
 using System;
 using Xunit;
 using SoftEtherVPNCmdNETCore;
+using System.Diagnostics;
+using System.Threading;
 
 namespace XUnitSoftEtherVPNCmdNETCore
 {
@@ -31,6 +33,16 @@ namespace XUnitSoftEtherVPNCmdNETCore
                 Assert.Equal(pair.Key, "TestItem");
                 Assert.Equal(pair.Value, "TestValue");
             }
+        }
+        [Fact]
+        public void CheckConnectToVPN()
+        {
+            cSoftEtherVPNCmdNETCore cmd = new cSoftEtherVPNCmdNETCore();
+            //Connect to VPN L10
+            cmd.ExecuteCommand("127.0.0.1", "CLIENT", "AccountConnect", "L10");
+            //Check connection status
+            var res = cmd.ExecuteCommandAndParse("127.0.0.1", "CLIENT", "AccountStatusGet", "L10");
+            Assert.Equal(res["VPN Connection Setting Name"], "L10");
         }
     }
 }
