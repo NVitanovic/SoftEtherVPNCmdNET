@@ -8,7 +8,7 @@ namespace SoftEtherVPNCmdNETCore.VPNClient
     /// All commands in this interface should be the same as on the link:
     /// https://www.softether.org/4-docs/1-manual/6._Command_Line_Management_Utility_Manual/6.5_VPN_Client_Management_Command_Reference
     /// </summary>
-    interface iVPNClient
+    public interface iVPNClient
     {
         string About();
         Dictionary<string,string> VersionGet();
